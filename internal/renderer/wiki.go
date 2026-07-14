@@ -2,7 +2,7 @@ package renderer
 
 import (
 	"bytes"
-	"text/template"
+	"html/template"
 
 	"wikiflex/internal/models"
 )
