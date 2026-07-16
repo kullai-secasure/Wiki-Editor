@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"log"
 	"os"
 
 	_ "github.com/lib/pq"
@@ -14,7 +15,13 @@ type PostgresDB struct {
 
 func NewPostgresDB() *PostgresDB {
 	dsn := os.Getenv("DATABASE_URL")
-	conn, _ := sql.Open("postgres", dsn)
+	conn, err := sql.Open("postgres", dsn)
+	if err != nil {
+		log.Fatalf("failed to open database: %v", err)
+	}
+	if err := conn.Ping(); err != nil {
+		log.Fatalf("failed to reach database: %v", err)
+	}
 	return &PostgresDB{conn: conn}
 }
 

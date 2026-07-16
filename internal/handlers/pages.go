@@ -17,8 +17,12 @@ func ViewPage(db *storage.PostgresDB) http.HandlerFunc {
 			http.Error(w, "Page not found", http.StatusNotFound)
 			return
 		}
-		html, _ := renderer.RenderPage(page)
-		w.Header().Set("Content-Type", "text/html")
+		html, err := renderer.RenderPage(page)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Write([]byte(html))
 	}
 }

@@ -18,7 +18,7 @@ func main() {
 	mux.HandleFunc("/edit/", handlers.EditPage(db))
 	mux.HandleFunc("/api/pages", handlers.ListPages(db))
 
-	wrapped := middleware.Logger(middleware.Auth(mux))
+	wrapped := middleware.Logger(middleware.SecurityHeaders(middleware.Auth(mux)))
 	log.Println("WikiFlex started on :8080")
 	log.Fatal(http.ListenAndServe(":8080", wrapped))
 }
